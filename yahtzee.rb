@@ -8,10 +8,11 @@ class YahtzeeGame
         @yahtzee_hands_unplayed = ["ones", "twos", "threes", "fours", "fives", "sixes", 
             "three of a kind", "four of a kind", "full house", 
             "small straight", "large straight", "yahtzee", "chance"]
-        @yahtzee_hands_played = []
+        @yahtzee_hands_played = {}
         @roll_count = 0
         @master_array = []
         @point_total = 0
+        @singles_total = 0
         start
     end
     def start
@@ -19,19 +20,20 @@ class YahtzeeGame
         user_roll = gets.chomp.downcase
         if user_roll == ""
             puts "\n Let's do this!"
-            roll(5)
+            roll
         else
             puts "\n Error."
             start
         end
     end
-    def roll(number)
+    def roll
         if @roll_count == 3 
             puts "\n You are out of rolls!"
             choice 
         else
             @array = []
-            number.times do |n| 
+            
+            (5 - @master_array.length).times do |n| 
                 n = rand(6) + 1
                 @array << n
             end
@@ -50,7 +52,7 @@ class YahtzeeGame
         if user_response == "h"
             hold
         elsif user_response == "r"
-            roll(5 - @master_array.length)
+            roll
         elsif user_response == "p"
             choice
         else
@@ -66,7 +68,7 @@ class YahtzeeGame
         elsif user_response == "h"
             hold
         elsif user_response == "r"
-            roll(5 - @master_array.length)
+            roll
         elsif user_response == "p"
             choice
         else   
@@ -102,7 +104,7 @@ class YahtzeeGame
         if @master_array.length == 5
             choice
         else
-            roll(5 - @master_array.length)
+            roll
         end
     end
     def return_hold
@@ -150,10 +152,14 @@ class YahtzeeGame
         user_hand = gets.chomp.downcase
         if @yahtzee_hands_unplayed.include?(user_hand)
             @yahtzee_hands_unplayed.delete(user_hand.to_s)
-            @yahtzee_hands_played << user_hand
+            @yahtzee_hands_played[user_hand] = points(user_hand)
             @point_total += points(user_hand)
+            @singles_total += points(user_hand) if user_hand == "ones" || user_hand == "twos" || 
+                user_hand == "threes" || user_hand == "fours" || user_hand == "fives" || user_hand == "sixes"
             puts points(user_hand) == 1 ? "\n You played #{user_hand} for 1 point." : "\n You played #{user_hand} for #{points(user_hand)} points."
             puts @point_total == 1? "\n You have 1 point, and #{@yahtzee_hands_unplayed.count} turns left!" : "\n You have #{@point_total} points, and #{@yahtzee_hands_unplayed.count} turns left!"
+            puts "\n You have #{@singles_total} points in the singles category." 
+            puts @singles_total < 63 ? " Score #{63 - @singles_total} more for a bonus!" : "Nice, you got the 35-point bonus!"
             puts "\n Hands played: #{@yahtzee_hands_played}."
             puts "\n Hands remaining: #{@yahtzee_hands_unplayed}"
             @roll_count = 0
@@ -163,13 +169,13 @@ class YahtzeeGame
             else
                 print "\n Press enter to continue > "
                 user_response = gets.chomp
-                roll(5) if user_response == ""
+                roll if user_response == ""
             end
         elsif @yahtzee_hands_played.include?(user_hand)
             puts "\n You already played that hand!"
             choice
         else
-            puts "\n That's not a valid hand.'"
+            puts "\n That's not a valid hand."
             choice
         end
     end
@@ -207,8 +213,17 @@ class YahtzeeGame
         end
         points
     end
+
     def game_over
-        puts "Game over. You scored #{@point_total} points. Good job!"
+        bonus
+        puts "Game over."
+        if @singles >= 63
+            puts "You scored #{@point_total} points, and earned the 35-point singles bonus."
+            @point_total += 35
+            puts "Your final score is #{@point_total} points. Good job!"
+        else
+            puts "You scored #{@point_total} points. Good job!"
+        end
         puts "Thank you for playing!"
         exit
     end
