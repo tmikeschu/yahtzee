@@ -45,26 +45,32 @@ class YahtzeeGame
         end
     end
     def response_prompt_1
-        puts "\n Do you want to hold any dice? (Y/N)"
+        puts "\n Do you want to (h)old, (r)oll, or (p)lay a hand? (Enter the letter in parentheses)"
         user_response = gets.chomp.downcase
-        if user_response == "y"
+        if user_response == "h"
             hold
-        elsif user_response == "n"
-            no_hold
+        elsif user_response == "r"
+            roll(5 - @master_array.length)
+        elsif user_response == "p"
+            choice
         else
             puts "\n Please enter Y or N"
             response_prompt_1
         end
     end
     def response_prompt_2
-        puts "\n Do you want to return any numbers? (Y/N)"
+        puts "\n Do you want to (re)turn, (h)old, (r)oll, or (p)lay a hand? ?"
         user_response = gets.chomp.downcase
-        if user_response == "y"
+        if user_response == "re"
             return_hold
-        elsif user_response == "n"
-            response_prompt_1
+        elsif user_response == "h"
+            hold
+        elsif user_response == "r"
+            roll(5 - @master_array.length)
+        elsif user_response == "p"
+            choice
         else   
-            puts "\n Please enter Y or N"
+            puts "\n Error."
             response_prompt_2
         end
     end
@@ -127,7 +133,6 @@ class YahtzeeGame
         puts "\n Do you want to ROLL or PLAY a hand?"
         user_response = gets.chomp.downcase
         if user_response == "roll"
-            roll(5 - @master_array.length)
         elsif user_response == "play"
             choice
         else
