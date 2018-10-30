@@ -37,7 +37,6 @@ class YahtzeeGame
       @roll_count += 1
       puts "\n * Turn #{@yahtzee_hands_played.count + 1} of 13 *"
       puts "\n Roll #{@roll_count}: You rolled: #{@array}"
-      @array 
       response_prompt_1 if @roll_count == 1
       response_prompt_2 if @roll_count == 2
       choice if @roll_count == 3
@@ -135,7 +134,7 @@ class YahtzeeGame
     elsif user_response == "play"
       choice
     else
-      "Please enter 'roll' or 'play'"
+      puts "Please enter 'roll' or 'play'"
       no_hold
     end
   end
