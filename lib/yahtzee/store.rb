@@ -1,5 +1,10 @@
+require "yahtzee/reducer"
+require "yahtzee/getters"
+
 module Yahtzee
   class Store
+    include Getters
+
     SINGLES = %i[ones twos threes fours fives sixes]
 
     HANDS = SINGLES.concat(%i[
@@ -12,20 +17,30 @@ module Yahtzee
       yahtzee
     ])
 
-    attr_reader :state
-
     def initialize(static = {})
       @state = initial_state(static)
+      @subscribers = []
     end
 
-    def total_score
-      state.
-        fetch(:hands, {}).
-        values.
-        sum(&:to_i)
+    def dispatch(message = :noop, payload = {})
+      @state.merge!(Reducer.send(message, state, payload))
+
+      subscribers.each do |subscriber|
+        subscriber.call()
+      end
+    end
+
+    def subscribe(subscriber)
+      @subscribers << subscriber
+    end
+
+    def get_state(*keys)
+      keys.inject(state) { |acc, el| acc.fetch(el) }
     end
 
     private
+
+    attr_reader :state, :subscribers
 
     def initial_state(static)
       {
@@ -34,6 +49,8 @@ module Yahtzee
         rolls: 0,
         current_hand: [],
         held_dice: [],
+        status: :not_started,
+        error: nil
       }
     end
   end
