@@ -45,17 +45,17 @@ class Yahtzee::StoreTest < Minitest::Test
 
   def test_dispatch_sends_a_message_and_updates_the_state
     store = Yahtzee::Store.new
-    store.dispatch(:start_game)
-    actual = store.get_state.fetch(:status)
-    expected = :in_progress
-    assert_equal actual, expected
+    before = store.get_state.fetch(:status)
+    store.dispatch(message: :start_game)
+    after = store.get_state.fetch(:status)
+    refute_equal before, after
   end
 
   def test_subscribe_registers_a_proc
     store = Yahtzee::Store.new
     state = false
 
-    store.subscribe(->() { state = !state })
+    store.subscribe(-> { state = !state })
     store.dispatch
     assert_equal state, true
 
