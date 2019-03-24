@@ -4,10 +4,10 @@ module Yahtzee
       puts message
     end
 
-    def self.ask(prompt:, key:)
+    def self.ask(prompt:, key:, parser: ->(x) { x })
       say(prompt)
-
-      {key: key, message: $stdin.gets.chomp.downcase}
+      message = $stdin.gets.chomp.downcase
+      {key: key, message: message, parsed: parser.call(message)}
     end
   end
 end

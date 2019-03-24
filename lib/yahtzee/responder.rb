@@ -1,3 +1,5 @@
+require "yahtzee/response_parser"
+
 module Yahtzee
   module Responder
     # only "ask" one question per status
@@ -7,8 +9,8 @@ module Yahtzee
         [:ask, ->(_) {{prompt: "Press enter to begin!", key: :enter_start}}],
       ],
       roll_1: [
-        [:say, ->(state) { "Roll 1: #{state.fetch(:hands)}}" }],
-        [:ask, ->(_) {{prompt: "Which ones do you want?", key: :roll_selection}}],
+        [:say, ->(state) { "Roll 1: #{state.fetch(:current_hand)}" }],
+        [:ask, ->(_) {{prompt: "Which ones do you want?", key: :roll_selection, parser: ResponseParser.digits}}],
       ],
     }
 

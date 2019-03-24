@@ -18,6 +18,8 @@ module Yahtzee
       case status
       when :not_started
         {message: :start_game, payload: payload}
+      when :roll_1
+        {message: :roll_selection, payload: payload}
       else
         {message: :noop}
       end

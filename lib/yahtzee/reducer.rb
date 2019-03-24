@@ -1,8 +1,10 @@
+require "yahtzee/roller"
+require "yahtzee/utils"
+
 module Yahtzee
   module Reducer
     class << self
       SINGLES = %i[ones twos threes fours fives sixes]
-      DEFAULT_DISPATCH = {message: :noop, payload: {}}
 
       HANDS = SINGLES.concat(%i[
         three_kind
@@ -27,11 +29,14 @@ module Yahtzee
       end
 
       def start_game(state, payload)
-        state.merge(status: :roll_1)
+        {
+          status: :roll_1,
+          current_hand: Roller.roll(state.fetch(:held_dice).length),
+        }
       end
 
       def exit(state, _)
-        state.merge(status: :game_over)
+        {status: :game_over}
       end
 
       def restart(state, _)
@@ -39,7 +44,39 @@ module Yahtzee
       end
 
       def noop(state, _)
-        state
+        {}
+      end
+
+      def roll_selection(state, payload)
+        selection = payload.fetch(:parsed)
+        current_hand = state.fetch(:current_hand)
+
+        selected_count = Utils.frequencies(selection)
+        current_count = Utils.frequencies(current_hand)
+
+        if selected_count.all? { |(k, v)| v <= current_count.fetch(k) }
+          state.fetch(:held_dice)
+            .concat(selection)
+            .then { |held_dice|
+            {
+              held_dice: held_dice,
+              current_hand: Utils.remove(state.fetch(:current_hand), held_dice),
+              status: next_roll(state.fetch(:status)),
+            }
+          }
+        else
+          {
+            notice: :invalid_selection,
+          }
+        end
+      end
+
+      def next_roll(status)
+        {
+          roll_1: :roll_2,
+          roll_2: :roll_3,
+          roll_3: :roll_1,
+        }.fetch(status, :noop)
       end
     end
   end
