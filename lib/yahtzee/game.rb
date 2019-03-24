@@ -24,6 +24,10 @@ module Yahtzee
           .then { |message| store.dispatch(message) }
       end
 
+      finish
+    end
+
+    def finish
       puts "Thanks for playing!"
     end
   end
