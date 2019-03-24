@@ -12,6 +12,10 @@ module Yahtzee
         [:say, ->(state) { "Roll 1: #{state.fetch(:current_hand)}" }],
         [:ask, ->(_) {{prompt: "Which ones do you want?", key: :roll_selection, parser: ResponseParser.digits}}],
       ],
+      roll_2: [
+        [:say, ->(state) { "Roll 2: #{state.fetch(:current_hand)}" }],
+        [:ask, ->(_) {{prompt: "Which ones do you want?", key: :roll_selection, parser: ResponseParser.digits}}],
+      ],
     }
 
     def self.respond(state)

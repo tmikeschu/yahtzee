@@ -60,7 +60,7 @@ module Yahtzee
             .then { |held_dice|
             {
               held_dice: held_dice,
-              current_hand: Utils.remove(state.fetch(:current_hand), held_dice),
+              current_hand: Roller.roll(state.fetch(:held_dice).length),
               status: next_roll(state.fetch(:status)),
             }
           }
