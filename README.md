@@ -30,9 +30,9 @@ rake test
 ./bin/yahtzee.rb
 ```
 
-- [] remove dice from selection
-- [] repeat previous message if errored
-- [] show score after selection
-- [] allow user to play hand early
-- [] skip roll if held dice length == 5
-- [] add unit test coverage for all collaborators
+- [ ] remove dice from selection
+- [ ] repeat previous message if errored
+- [ ] show score after selection
+- [ ] allow user to play hand early
+- [ ] skip roll if held dice length == 5
+- [ ] add unit test coverage for all collaborators
