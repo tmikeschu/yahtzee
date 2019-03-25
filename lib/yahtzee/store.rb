@@ -9,6 +9,7 @@ module Yahtzee
 
     def initialize(static = {})
       @state = Reducer.initial_state(static)
+      @history = nil
       @subscribers = []
     end
 
@@ -17,6 +18,7 @@ module Yahtzee
         .merge(data)
         .values_at(:message, :payload)
 
+      @history = @state.dup
       @state.merge!(Reducer.send(message, state, payload))
 
       subscribers.each do |subscriber|
