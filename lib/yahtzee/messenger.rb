@@ -15,14 +15,10 @@ module Yahtzee
     private_class_method
 
     def self.make_message(status, payload)
-      case status
-      when :not_started
-        {message: :start_game, payload: payload}
-      when :roll_1
-        {message: :roll_selection, payload: payload}
-      else
-        {message: :noop}
-      end
+      {
+        message: payload.fetch(:key, :noop),
+        payload: payload,
+      }
     end
   end
 end
