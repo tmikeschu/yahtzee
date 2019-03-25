@@ -16,6 +16,18 @@ module Yahtzee
           acc.merge(el => acc.fetch(el, 0) + 1)
         }
       end
+
+      def colorize
+        ->(color_code, text) { "#{color_code}#{text}\e[0m" }.curry
+      end
+
+      def red
+        colorize.call("\e[31m")
+      end
+
+      def green
+        colorize.call("\e[32m")
+      end
     end
   end
 end
