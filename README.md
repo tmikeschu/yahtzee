@@ -15,3 +15,24 @@ I may get around to refactoring this and adding some tests, but the whole point 
 ### Setup
 
 So simple: clone, `cd`, and `ruby yahtzee.rb`.
+
+## V2 (WIP)
+
+### Tests
+
+```
+rake test
+```
+
+### To play the game
+
+```
+./bin/yahtzee.rb
+```
+
+- [] remove dice from selection
+- [] repeat previous message if errored
+- [] show score after selection
+- [] allow user to play hand early
+- [] skip roll if held dice length == 5
+- [] add unit test coverage for all collaborators
