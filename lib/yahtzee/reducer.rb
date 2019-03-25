@@ -48,12 +48,14 @@ module Yahtzee
         {}
       end
 
-      def roll_selection(state, payload)
+      def select_dice(state, payload)
         selection = payload.fetch(:parsed)
         current_hand = state.fetch(:current_hand)
 
         selected_count = Utils.frequencies(selection)
         current_count = Utils.frequencies(current_hand)
+
+        status = state.fetch(:status)
 
         if valid_selection?(selected_count, current_count)
           state.fetch(:held_dice)
@@ -61,20 +63,15 @@ module Yahtzee
             .then { |held_dice|
             {
               held_dice: held_dice,
-              current_hand: Roller.roll(state.fetch(:held_dice).length),
-              status: next_roll(state.fetch(:status)),
+              status: next_roll(status),
               error: nil,
-            }
+            }.merge(status == :roll_3 ? {} : {current_hand: Roller.roll(state.fetch(:held_dice).length)})
           }
         else
           {
             error: "Invalid selection: #{selection}",
           }
         end
-      end
-
-      def valid_selection?(selected, current)
-        selected.all? { |(k, v)| current.key?(k) && v <= current.fetch(k) }
       end
 
       def select_hand(state, payload)
@@ -88,7 +85,7 @@ module Yahtzee
           }
         elsif hand
           {
-            error: "#{hands.fetch(selection)} already played. Please pick an unplayed hand.",
+            error: "#{selection} already played. Please pick an unplayed hand.",
           }
         else
           hands, dice = state.values_at(:hands, :held_dice)
@@ -111,6 +108,10 @@ module Yahtzee
           roll_3: :play_hand,
           play_hand: :roll_1,
         }.fetch(status, :noop)
+      end
+
+      def valid_selection?(selected, current)
+        selected.all? { |(k, v)| current.key?(k) && v <= current.fetch(k) }
       end
     end
   end
