@@ -7,9 +7,8 @@ module Yahtzee
       actual = Scorer.score(
         dice: [1, 2, 3, 4, 1],
         hand: :ones,
-        current_score: Scorer::SCORE_INIT
       )
-      expected = Scorer::SCORE_INIT.merge(ones: 2)
+      expected = 2
       assert_equal(actual, expected)
     end
 
@@ -17,9 +16,8 @@ module Yahtzee
       actual = Scorer.score(
         dice: [1, 2, 3, 4, 2],
         hand: :twos,
-        current_score: Scorer::SCORE_INIT
       )
-      expected = Scorer::SCORE_INIT.merge(twos: 4)
+      expected = 4
       assert_equal(actual, expected)
     end
 
@@ -27,9 +25,8 @@ module Yahtzee
       actual = Scorer.score(
         dice: [1, 2, 3, 3, 3],
         hand: :threes,
-        current_score: Scorer::SCORE_INIT
       )
-      expected = Scorer::SCORE_INIT.merge(threes: 9)
+      expected = 9
       assert_equal(actual, expected)
     end
 
@@ -37,9 +34,8 @@ module Yahtzee
       actual = Scorer.score(
         dice: [1, 2, 4, 4, 1],
         hand: :fours,
-        current_score: Scorer::SCORE_INIT
       )
-      expected = Scorer::SCORE_INIT.merge(fours: 8)
+      expected = 8
       assert_equal(actual, expected)
     end
 
@@ -47,9 +43,8 @@ module Yahtzee
       actual = Scorer.score(
         dice: [1, 5, 5, 5, 5],
         hand: :fives,
-        current_score: Scorer::SCORE_INIT
       )
-      expected = Scorer::SCORE_INIT.merge(fives: 20)
+      expected = 20
       assert_equal(actual, expected)
     end
 
@@ -57,9 +52,8 @@ module Yahtzee
       actual = Scorer.score(
         dice: [6, 5, 6, 6, 1],
         hand: :sixes,
-        current_score: Scorer::SCORE_INIT
       )
-      expected = Scorer::SCORE_INIT.merge(sixes: 18)
+      expected = 18
       assert_equal(actual, expected)
     end
 
@@ -67,9 +61,8 @@ module Yahtzee
       actual = Scorer.score(
         dice: [6, 5, 6, 6, 1],
         hand: :twos,
-        current_score: Scorer::SCORE_INIT
       )
-      expected = Scorer::SCORE_INIT.merge(twos: 0)
+      expected = 0
       assert_equal(actual, expected)
     end
 
@@ -77,9 +70,8 @@ module Yahtzee
       actual = Scorer.score(
         dice: [1, 2, 3, 4, 6],
         hand: :small_straight,
-        current_score: Scorer::SCORE_INIT
       )
-      expected = Scorer::SCORE_INIT.merge(small_straight: 30)
+      expected = 30
       assert_equal(actual, expected)
     end
 
@@ -87,9 +79,8 @@ module Yahtzee
       actual = Scorer.score(
         dice: [1, 2, 3, 5, 6],
         hand: :small_straight,
-        current_score: Scorer::SCORE_INIT
       )
-      expected = Scorer::SCORE_INIT.merge(small_straight: 0)
+      expected = 0
       assert_equal(actual, expected)
     end
 
@@ -97,9 +88,8 @@ module Yahtzee
       actual = Scorer.score(
         dice: [1, 2, 3, 4, 5],
         hand: :large_straight,
-        current_score: Scorer::SCORE_INIT
       )
-      expected = Scorer::SCORE_INIT.merge(large_straight: 40)
+      expected = 40
       assert_equal(actual, expected)
     end
 
@@ -107,9 +97,8 @@ module Yahtzee
       actual = Scorer.score(
         dice: [1, 2, 3, 5, 6],
         hand: :large_straight,
-        current_score: Scorer::SCORE_INIT
       )
-      expected = Scorer::SCORE_INIT.merge(large_straight: 0)
+      expected = 0
       assert_equal(actual, expected)
     end
 
@@ -117,9 +106,8 @@ module Yahtzee
       actual = Scorer.score(
         dice: [1, 2, 3, 4, 5],
         hand: :chance,
-        current_score: Scorer::SCORE_INIT
       )
-      expected = Scorer::SCORE_INIT.merge(chance: 15)
+      expected = 15
       assert_equal(actual, expected)
     end
 
@@ -127,9 +115,8 @@ module Yahtzee
       actual = Scorer.score(
         dice: [1, 1, 1, 1, 1],
         hand: :yahtzee,
-        current_score: Scorer::SCORE_INIT
       )
-      expected = Scorer::SCORE_INIT.merge(yahtzee: 50)
+      expected = 50
       assert_equal(actual, expected)
     end
 
@@ -137,9 +124,8 @@ module Yahtzee
       actual = Scorer.score(
         dice: [1, 2, 3, 4, 5],
         hand: :yahtzee,
-        current_score: Scorer::SCORE_INIT
       )
-      expected = Scorer::SCORE_INIT.merge(yahtzee: 0)
+      expected = 0
       assert_equal(actual, expected)
     end
 
@@ -147,9 +133,8 @@ module Yahtzee
       actual = Scorer.score(
         dice: [1, 1, 1, 2, 2],
         hand: :full_house,
-        current_score: Scorer::SCORE_INIT
       )
-      expected = Scorer::SCORE_INIT.merge(full_house: 25)
+      expected = 25
       assert_equal(actual, expected)
     end
 
@@ -157,9 +142,8 @@ module Yahtzee
       actual = Scorer.score(
         dice: [1, 1, 2, 2, 3],
         hand: :full_house,
-        current_score: Scorer::SCORE_INIT
       )
-      expected = Scorer::SCORE_INIT.merge(full_house: 0)
+      expected = 0
       assert_equal(actual, expected)
     end
 
@@ -167,9 +151,8 @@ module Yahtzee
       actual = Scorer.score(
         dice: Array.new(5) { 1 },
         hand: :full_house,
-        current_score: Scorer::SCORE_INIT
       )
-      expected = Scorer::SCORE_INIT.merge(full_house: 25)
+      expected = 25
       assert_equal(actual, expected)
     end
 
@@ -177,9 +160,8 @@ module Yahtzee
       actual = Scorer.score(
         dice: Array.new(5) { 1 },
         hand: :large_straight,
-        current_score: Scorer::SCORE_INIT
       )
-      expected = Scorer::SCORE_INIT.merge(large_straight: 40)
+      expected = 40
       assert_equal(actual, expected)
     end
 
@@ -187,9 +169,8 @@ module Yahtzee
       actual = Scorer.score(
         dice: Array.new(5) { 1 },
         hand: :small_straight,
-        current_score: Scorer::SCORE_INIT
       )
-      expected = Scorer::SCORE_INIT.merge(small_straight: 30)
+      expected = 30
       assert_equal(actual, expected)
     end
   end

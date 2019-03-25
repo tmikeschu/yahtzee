@@ -2,9 +2,9 @@ module Yahtzee
   module Scorer
     count = ->(n, xs) { xs.select { |x| x == n }.sum }.curry(2)
     of_a_kind = ->(n, xs) {
-      xs.reduce({}) { |acc, el| acc.merge(el => 1) { |a| a + 1 } }.
-        select {|_, v| v >= n }.
-        reduce(0) { |_, k, v| k * v }
+      xs.reduce({}) { |acc, el| acc.merge(el => 1) { |a| a + 1 } }
+        .select {|_, v| v >= n }
+        .reduce(0) { |_, k, v| k * v }
     }.curry(2)
 
     is_ascending = ->((a, b)) { b - a == 1 }
@@ -46,10 +46,8 @@ module Yahtzee
     }
     SCORE_INIT = HANDS.reduce({}) { |acc, (hand, *_)| acc.merge(hand => 0) }
 
-    def self.score(dice:, hand:, current_score:)
-      current_score.merge({
-        hand => HANDS.fetch(hand, ->(_) { 0 }).call(dice).to_i,
-      })
+    def self.score(dice:, hand:)
+      HANDS.fetch(hand, ->(_) { 0 }).call(dice).to_i
     end
   end
 end

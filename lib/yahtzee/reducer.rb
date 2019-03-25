@@ -1,5 +1,6 @@
 require "yahtzee/roller"
 require "yahtzee/utils"
+require "yahtzee/scorer"
 
 module Yahtzee
   module Reducer
@@ -77,19 +78,23 @@ module Yahtzee
       end
 
       def select_hand(state, payload)
-        selection = payload.fetch(:parsed)
+        selection = payload.fetch(:parsed).to_sym
         hands = state.fetch(:hands)
-        if !hands.key?(selection.to_sym)
+        hand = hands.fetch(selection, false)
+
+        if hand == false
           {
             error: "Invalid selection: #{payload.fetch(:message)}",
           }
-        elsif hands.fetch(selection.to_sym)
+        elsif hand
           {
-            error: "#{hands.fetch(selection.to_sym)} already played. Please pick an unplayed hand.",
+            error: "#{hands.fetch(selection)} already played. Please pick an unplayed hand.",
           }
         else
+          hands, dice = state.values_at(:hands, :held_dice)
           {
             held_dice: [],
+            hands: hands.merge(selection => Scorer.score(dice: dice, hand: selection)),
             current_hand: Roller.roll(0),
             status: next_roll(state.fetch(:status)),
             error: nil,
