@@ -1,6 +1,14 @@
 module Yahtzee
   module Utils
     class << self
+      def identity(x = nil)
+        if x.nil?
+          ->(y) { y }
+        else
+          x
+        end
+      end
+
       def remove(xs, ys)
         ys.reduce(frequencies(xs)) { |acc, el|
           acc.merge(el => acc.fetch(el, 0) - 1)
