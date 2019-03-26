@@ -57,6 +57,14 @@ class Yahtzee::StoreTest < Minitest::Test
   end
 
   def test_last_state_gives_the_previous_state
-    # TODO
+    store = Yahtzee::Store.new
+    before = store.get_state
+
+    store.dispatch({message: :start_game})
+
+    after = store.get_state
+
+    refute_equal(after, before)
+    assert_equal(store.last_state, before)
   end
 end

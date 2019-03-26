@@ -31,7 +31,7 @@ module Yahtzee
     end
 
     def get_state(*keys)
-      keys.inject(state) { |acc, el| acc.fetch(el) }
+      keys.inject(state.dup) { |acc, el| acc.fetch(el) }
     end
 
     def last_state
