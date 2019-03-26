@@ -34,6 +34,10 @@ module Yahtzee
       keys.inject(state) { |acc, el| acc.fetch(el) }
     end
 
+    def last_state
+      @history
+    end
+
     private
 
     attr_reader :state, :subscribers

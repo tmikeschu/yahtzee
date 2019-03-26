@@ -17,7 +17,7 @@ module Yahtzee
         yahtzee
       ])
 
-      def initial_state(static)
+      def initial_state(static = {})
         {
           static: static,
           hands: HANDS.reduce({}) { |acc, el| acc.merge(el => nil) },
@@ -29,26 +29,26 @@ module Yahtzee
         }
       end
 
-      def start_game(state, payload)
+      def start_game(state, _ = {})
         {
           status: :roll_1,
           current_hand: Roller.roll(state.fetch(:held_dice).length),
         }
       end
 
-      def exit(state, _)
+      def exit(state, _ = {})
         {status: :game_over}
       end
 
-      def restart(state, _)
+      def restart(state, _ = {})
         initial_state(state.fetch(:static))
       end
 
-      def noop(state, _)
+      def noop(_, _ = {})
         {}
       end
 
-      def select_dice(state, payload)
+      def select_dice(state, payload = {})
         selection = payload.fetch(:parsed)
         current_hand = state.fetch(:current_hand)
 

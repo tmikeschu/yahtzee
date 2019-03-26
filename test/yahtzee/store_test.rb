@@ -36,13 +36,6 @@ class Yahtzee::StoreTest < Minitest::Test
     end
   end
 
-  def test_total_score_returns_0_initially
-    store = Yahtzee::Store.new
-    actual = store.total_score
-    expected = 0
-    assert_equal actual, expected
-  end
-
   def test_dispatch_sends_a_message_and_updates_the_state
     store = Yahtzee::Store.new
     before = store.get_state.fetch(:status)
@@ -61,5 +54,9 @@ class Yahtzee::StoreTest < Minitest::Test
 
     store.dispatch
     assert_equal state, false
+  end
+
+  def test_last_state_gives_the_previous_state
+    # TODO
   end
 end
