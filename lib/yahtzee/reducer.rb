@@ -89,12 +89,14 @@ module Yahtzee
           }
         else
           hands, dice = state.values_at(:hands, :held_dice)
+          score = {selection => Scorer.score(dice: dice, hand: selection)}
           {
             held_dice: [],
-            hands: hands.merge(selection => Scorer.score(dice: dice, hand: selection)),
+            hands: hands.merge(score),
             current_hand: Roller.roll(0),
             status: next_roll(state.fetch(:status)),
             error: nil,
+            success: score.to_s,
           }
         end
       end
